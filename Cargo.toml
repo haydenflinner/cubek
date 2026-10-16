@@ -38,15 +38,15 @@ cubek-test-utils = { path = "crates/cubek-test-utils", version = "0.3.0", defaul
 cubek-tile = { path = "crates/cubek-tile", version = "0.3.0", default-features = false }
 
 ### For local development. ###
-# cubecl = { path = "../cubecl/crates/cubecl", default-features = false }
-# cubecl-common = { path = "../cubecl/crates/cubecl-common", default-features = false }
-# cubecl-environment = { path = "../cubecl/crates/cubecl-environment", default-features = false }
-# cubecl-ir = { path = "../cubecl/crates/cubecl-ir", default-features = false }
+cubecl = { path = "../cubecl/crates/cubecl", default-features = false }
+cubecl-common = { path = "../cubecl/crates/cubecl-common", default-features = false }
+cubecl-environment = { path = "../cubecl/crates/cubecl-environment", default-features = false }
+cubecl-ir = { path = "../cubecl/crates/cubecl-ir", default-features = false }
 ### For the main cubek branch. ###
-cubecl = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
-cubecl-common = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
-cubecl-environment = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
-cubecl-ir = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
+# cubecl = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
+# cubecl-common = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
+# cubecl-environment = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
+# cubecl-ir = { git = "https://github.com/tracel-ai/cubecl", rev = "68ebac9abaeb7101e16f295a33904e768673a9f4", default-features = false }
 ### For releases ###
 # cubecl = { version = "0.11.0", default-features = false }
 # cubecl-common = { version = "0.11.0", default-features = false }
@@ -89,3 +89,24 @@ opt-level = 0
 
 [profile.dev.build-override]
 opt-level = 3
+
+# Same patch set as ../cubecl's root manifest (patch tables are workspace-root
+# only, so cubek needs its own copies to keep pliron/cranelift unified with
+# pliron-clif-lower).
+[patch."https://github.com/pliron-org/pliron.git"]
+pliron = { version = "0.19" }
+pliron-derive = { version = "0.19" }
+
+[patch.crates-io]
+pliron = { path = "../purerust/rustc_codegen_pliron/vendor/pliron" }
+pliron-llvm = { path = "../purerust/rustc_codegen_pliron/vendor/pliron/pliron-llvm" }
+pliron-derive = { path = "../purerust/rustc_codegen_pliron/vendor/pliron/pliron-derive" }
+regalloc2 = { path = "../purerust/rustc_codegen_pliron/vendor/regalloc2" }
+cranelift-codegen = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-codegen" }
+cranelift-codegen-meta = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-codegen-meta" }
+cranelift-object = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-object" }
+cranelift-assembler-x64 = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-assembler-x64" }
+cranelift-assembler-x64-meta = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-assembler-x64-meta" }
+cranelift-interpreter = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-interpreter" }
+cranelift-reader = { path = "../purerust/rustc_codegen_pliron/vendor/cranelift-reader" }
+rsasm = { path = "../purerust/rustc_codegen_pliron/vendor/rsasm" }

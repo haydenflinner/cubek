@@ -58,7 +58,7 @@ cubek-reduce = { workspace = true, default-features = true, features = ["benchma
 cubek-std = { workspace = true, default-features = true, features = ["benchmarks"] }
 cubek-test-utils = { workspace = true, default-features = true }
 
-cubecl = { workspace = true, features = ["test-runtime", "stdlib"] }
+cubecl = { workspace = true, features = ["test-runtime", "stdlib", "cpu", "pliron-dump"] }
 half = { workspace = true }
 
 [[bench]]
