@@ -59,9 +59,16 @@ impl Launcher {
         form: KernelForm<'_>,
     ) -> Self {
         let (cube_count, cube_dim) = grid;
-        let max_units = client.properties().hardware.max_units_per_cube;
+        let properties = client.properties();
+        let max_units = properties.hardware.max_units_per_cube;
+        // A CPU runtime oversubscribes oversized cubes across its cores
+        // (the dispatcher spawns one worker thread per unit and
+        // round-robins extras), so `max_units_per_cube` is a planning
+        // hint there rather than a hard cap. `num_cpu_cores` is only
+        // reported by CPU runtimes; accelerators keep the assert.
         assert!(
-            cube_dim.num_elems() <= max_units,
+            cube_dim.num_elems() <= max_units
+                || properties.hardware.num_cpu_cores.is_some(),
             "Launcher::new: a cube of {} units, but the device holds at most {max_units}",
             cube_dim.num_elems()
         );
