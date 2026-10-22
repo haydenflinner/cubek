@@ -25,7 +25,10 @@ pub fn calculate_plane_count_per_cube(
     };
 
     let max_plane_per_cube = properties.max_units_per_cube / plane_dim;
-    plane_count.min(max_plane_per_cube)
+    // An empty problem still needs a valid cube dim: `num_units_in_cube`
+    // feeds a `div_ceil` below and the launch short-circuits on zero
+    // working cubes, so flooring at one plane is safe.
+    plane_count.min(max_plane_per_cube).max(1)
 }
 
 pub fn generate_vector_size(
