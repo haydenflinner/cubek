@@ -28,9 +28,15 @@ fn vector_size_for(
     } else {
         (default_size, 1)
     };
+    // Vector loads read the aligned line `idx / v` of an element index `idx`
+    // built from strides, so every non-unit stride must be a multiple of `v`;
+    // otherwise a row or batch start lands mid-line and the read silently
+    // fetches the wrong elements.
+    let strides = &binding.data().strides;
     client
         .io_optimized_vector_sizes(size)
         .filter(|&v| dim.is_multiple_of(plane_size * v * num_quants))
+        .filter(|&v| strides.iter().all(|s| *s == 1 || s % v == 0))
         .max()
         .ok_or(VectorizationError::NoValidVectorization)
 }
